@@ -1,83 +1,15 @@
-# KCF tracker – parallel and PREM implementations
-
-The goal of this project is modify KCF tracker for use in the
-[HERCULES][1] project, where it will run on NVIDIA TX2 board. The
-differences from the [original version][orig] are:
-  * To achieve the needed performance on TX2, we try various ways of
-    parallelizing the algorithm, including execution on the GPU.
-  * The tracker is extended to track rotating objects.
-  * The aim is also to modify the code to comply with the PRedictable
-    Execution Model (PREM).
-
-Stable version of the tracker is available from a [CTU server][2],
-development happens at [GitHub][iig].
-
-[1]: http://hercules2020.eu/
-[2]: http://rtime.felk.cvut.cz/gitweb/hercules2020/kcf.git
-[iig]: https://github.com/CTU-IIG/kcf
+# KCF extention: parallel implementations of SCT Tracking on GPU (Jetson TX2i)
+# Reference:
+[1]: https://github.com/jongwon20000/SCT
+[2]: https://github.com/CTU-IIG/kcf
 [3]: https://github.com/Shanigen/kcf
-[orig]: https://github.com/vojirt/kcf
-
-<!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
-**Table of Contents**
-
-- [Prerequisites](#prerequisites)
-- [Compilation](#compilation)
-    - [Compile all supported versions](#compile-all-supported-versions)
-    - [Using cmake gui](#using-cmake-gui)
-    - [Command line](#command-line)
-- [Running](#running)
-    - [Options](#options)
-- [Automated testing](#automated-testing)
-- [Authors](#authors)
-- [References](#references)
-- [License](#license)
-
-<!-- markdown-toc end -->
-
 
 ## Prerequisites
-
-The code depends on OpenCV (version 2.4 or 3.x) library. [CMake][13]
-(optionally with [Ninja][8]) is used for building. Depending on the
-version to be compiled you need to have development packages for
-[FFTW][4], [CUDA][5] or [OpenMP][6] installed.
-
-On TX2, the following command should install what's needed:
-``` shellsession
-$ apt install cmake ninja-build libopencv-dev libfftw3-dev
-```
-
-[4]: http://www.fftw.org/
-[5]: https://developer.nvidia.com/cuda-downloads
-[6]: http://www.openmp.org/
-[13]: https://cmake.org/
 
 ## Compilation
 
 There are multiple ways how to compile the code.
 
-### Compile all supported versions
-
-``` shellsession
-$ git submodule update --init
-$ make -k
-```
-
-This will create several `build-*` directories and compile different
-versions in them. If prerequisites of some builds are missing, the
-`-k` option ensures that the errors are ignored. This uses [Ninja][8]
-build system, which is useful when building naively on TX2, because
-builds with `ninja` are faster (better parallelized) than with `make`.
-
-To build only a specific version run `make <version>`. For example,
-CUDA-based version can be compiled with:
-
-``` shellsession
-$ make cufft
-```
-
-[8]: https://ninja-build.org/
 
 ### Using cmake gui
 
@@ -194,63 +126,7 @@ top_left_y, width, height".
 | --box, -b[X,Y,W,H] | Specify initial bounding box via command line rather than via `region.txt` or `groundtruth.txt` or by selecting it with mouse (if no coordinates are given). |
 | --box_out, -B <box.txt> | Specify the file name where to store manually specified bounding boxes (with the <kbd>i</kbd> key) |
 
-## Automated testing
-
-The tracker comes with a test suite based on [vot2016 datatset][11].
-You can run the test suite as follows:
-
-    make vot2016  # This downloads the dataset (about 1GB of data)
-	make test
-
-The above command run all tests in parallel and displays the results
-in a table. If you want to measure performance, do not run multiple
-tests together. This can be achieved by:
-
-	make build.ninja
-	ninja -j1 test
-
-You can test only a subset of builds or image sequences by setting
-BUILDS, TESTSEQ or TESTFLAGS make variables. For instance:
-
-	make build.ninja BUILDS="cufft cufft-big fftw" TESTSEQ="bmx ball1"
-	ninja test
 
 
 
 
-## Authors
-* Vít Karafiát, Michal Sojka
-
-[Original C++ implementation of the KCF tracker][12] was written by
-Tomas Vojir and is reimplementation of the algorithm presented in
-"High-Speed Tracking with Kernelized Correlation Filters" paper \[1].
-
-[12]: https://github.com/vojirt/kcf/blob/master/README.md
-
-## References
-
-\[1] João F. Henriques, Rui Caseiro, Pedro Martins, Jorge Batista,
-“High-Speed Tracking with Kernelized Correlation Filters“, IEEE
-Transactions on Pattern Analysis and Machine Intelligence, 2015
-
-## License
-
-Copyright (c) 2014, Tomáš Vojíř\
-Copyright (c) 2018, Vít Karafiát\
-Copyright (c) 2018, Michal Sojka
-
-Permission to use, copy, modify, and distribute this software for research
-purposes is hereby granted, provided that the above copyright notice and
-this permission notice appear in all copies.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
-ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
-ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
-OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-
-<!-- Local Variables: -->
-<!-- markdown-toc-user-toc-structure-manipulation-fn: cdr -->
-<!-- End: -->
