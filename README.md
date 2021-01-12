@@ -1,33 +1,10 @@
 # KCF extention: parallel implementations of SCT Tracking on GPU (Jetson TX2i)
 
 # Reference:
-[1]: https://github.com/jongwon20000/SCT
-[2]: https://github.com/CTU-IIG/kcf
-[3]: https://github.com/Shanigen/kcf
+[1] https://github.com/jongwon20000/SCT
+[2] https://github.com/CTU-IIG/kcf
+[3] https://github.com/Shanigen/kcf
 
-## Compilation
-
-There are multiple ways how to compile the code.
-
-
-### Using cmake gui
-
-```shellsession
-$ git submodule update --init
-$ mkdir build
-$ cmake-gui .
-```
-
-- Use the just created build directory as "Where to build the
-  binaries".
-- Press "Configure".
-- Choose desired build options. Each option has a comment briefly
-  explaining what it does.
-- Press "Generate" and close the window.
-
-```shellsession
-$ make -C build
-```
 ### Command line
 
 ```shellsession
@@ -38,10 +15,7 @@ $ cmake [options] ..  # see the tables below
 $ make
 ```
 
-The `cmake` options below allow to select, which version to build.
-
-The following table shows how to configure different FFT
-implementations.
+Tions.
 
 |Option| Description |
 | --- | --- |
@@ -61,7 +35,10 @@ With all of these FFT version additional options can be added:
 | `-DASYNC=ON` | Use C++ `std::async` to run computations for different scales in parallel. This mode of parallelization was present in the original implementation. Here, it is superseeded with -DOPENMP. This doesn't work with `BIG_BATCH` mode.|
 
 See also the top-level `Makefile` for other useful cmake parameters
-such as extra compiler flags etc.
+such as extra compiler flags etc.he `cmake` options below allow to select, which version to build.
+
+The following table shows how to configure different FFT
+implementat
 
 ## Running
 
