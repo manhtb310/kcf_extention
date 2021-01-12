@@ -17,52 +17,7 @@ $ make
 
 ## Running
 
-No matter which method is used to compile the code, the result will be
-a `kcf_vot` binary.
-
-It operates on an image sequence created according to [VOT 2014
-methodology][10]. Alternatively, you can use a video file or a camera
-as an input. You can find some image sequences in [vot2016
-datatset][11].
-
-The binary can be run as follows:
-
-1. `./kcf_vot [options]`
-
-   The program looks for `groundtruth.txt` or `region.txt` and
-   `images.txt` files in current directory.
-
-   - `images.txt` contains a list of images to process, each on a
-     separate line.
-   - `groundtruth.txt` contains the correct location of the tracked
-     object in each image as four corner points listed clockwise
-     starting from bottom left corner. Only the first line from this
-     file is used.
-   - `region.txt` is an alternative way of specifying the location of
-     the object to track via its bounding box (top_left_x, top_left_y,
-     width, height) in the first frame.
-
-2. `./kcf_vot [options] <directory>`
-
-   Looks for `groundtruth.txt` or `region.txt` and `images.txt` files
-   in the given `directory`.
-
-3. `./kcf_vot [options] <path/to/region.txt or groundtruth.txt> <path/to/images.txt> [path/to/output.txt]`
-
-4. `./kcf_vot [options] <file>`
-
-   Reads the images from video `<file>`.
-
-5. `./kcf_vot [options] <number>`
-
-   Captures the images from camera `<number>`.
-
-By default the program generates file `output.txt` containing the
-bounding boxes of the tracked object in the format "top_left_x,
-top_left_y, width, height".
-
-[10]: http://www.votchallenge.net/
-[11]: http://www.votchallenge.net/vot2016/dataset.html
+`./kcf_vot [options] <path/to/region.txt or groundtruth.txt> <path/to/images.txt> [path/to/output.txt]`
 
 ### Options
 
