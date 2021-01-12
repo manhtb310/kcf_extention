@@ -15,31 +15,6 @@ $ cmake [options] ..  # see the tables below
 $ make
 ```
 
-Tions.
-
-|Option| Description |
-| --- | --- |
-| `-DFFT=OpenCV` | Use OpenCV to calculate FFT.|
-| `-DFFT=fftw` | Use fftw and its `plan_many` and "New-array execute" functions. If `std::async`, OpenMP or cuFFTW is not used the plans will use 2 threads by default.|
-| `-DFFT=cuFFTW` | Use cuFFTW interface to cuFFT library.|
-| `-DFFT=cuFFT` | Use cuFFT. This version also uses pure CUDA implementation of `ComplexMat` class and Gaussian correlation.|
-
-With all of these FFT version additional options can be added:
-
-|Option| Description |
-| --- | --- |
-| `-DBIG_BATCH=ON` | Concatenate matrices of different scales to one big matrix and perform all computations on this matrix. This improves performance of GPU FFT offloading. |
-| `-DOPENMP=ON` | Parallelize certain operation with OpenMP. With `-DBIG_BATCH=OFF` it runs computations for differenct scales in parallel, with `-DBIG_BATCH=ON` it parallelizes the feature extraction, which runs on the CPU. With `fftw`, Ffftw's plans will execute in parallel.|
-| `-DCUDA_DEBUG=ON` | Adds calls cudaDeviceSynchronize after every CUDA function and kernel call.|
-| `-DOpenCV_DIR=/opt/opencv-3.3/share/OpenCV` | Compile against a custom OpenCV version. |
-| `-DASYNC=ON` | Use C++ `std::async` to run computations for different scales in parallel. This mode of parallelization was present in the original implementation. Here, it is superseeded with -DOPENMP. This doesn't work with `BIG_BATCH` mode.|
-
-See also the top-level `Makefile` for other useful cmake parameters
-such as extra compiler flags etc.he `cmake` options below allow to select, which version to build.
-
-The following table shows how to configure different FFT
-implementat
-
 ## Running
 
 No matter which method is used to compile the code, the result will be
