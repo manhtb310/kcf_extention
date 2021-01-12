@@ -1,0 +1,34 @@
+#!/bin/bash
+set -e
+
+declare -A expected_accuracy
+
+expected_accuracy=([bag]=0.53 [ball1-correct]=0.65 [ball1]=0.27 [car1]=0.35 [book]=0.19
+		   [bmx]=0.38 [crossing]=0.48 [racing]=0.52)
+
+for i in "$@"; do
+    [[ "$i" =~ build-(.*)/kcf_vot-(.*)-(.*).log ]]
+    build=${BASH_REMATCH[1]}
+    flags=${BASH_REMATCH[3]}
+    seq=${BASH_REMATCH[2]}
+
+    result=$(grep 'Average accuracy:' $i | sed -e 's/Average/Avg./g' -e 's/processing //' || :)
+    expected="${expected_accuracy[$seq]:-0}"
+
+    # Work around problem with OpenCV version on Travis, which causes test failures
+    if [[ -n "$TRAVIS" && $seq = ball1 && $build =~ opencvfft && $flags = fit ]]; then
+	expected=0.10
+    fi
+
+    if [[ "$result" =~ accuracy:\ ([0-9.]+) ]]; then
+	result+=" >= $expected"
+	if [[ $(echo "${BASH_REMATCH[1]} >= ${expected}"|bc) -eq 1 ]]; then
+	    status=ok
+	else
+	    status=ACCURACY
+	fi
+    else
+	status=FAILED
+    fi
+    echo ! "$seq;$flags;$build;$result;$status"
+done | sort -t";" $SORT_FLAGS | column -t -s";"
