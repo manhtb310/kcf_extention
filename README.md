@@ -3,7 +3,7 @@
 # Reference:
 [1] https://github.com/jongwon20000/SCT
 [2] https://github.com/CTU-IIG/kcf
-[3] https://github.com/Shanigen/kcf
+
 
 ### Command line
 
