@@ -1,4 +1,4 @@
-# KCF extention: parallel implementations of SCT Tracking on GPU (Jetson TX2i)
+# KCF extention: Implementation of SCT Tracking on GPU (Jetson TX2i)
 
 # Reference:
 [1] https://github.com/jongwon20000/SCT
